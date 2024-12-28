@@ -2,14 +2,18 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSelector } from "react-redux";
 
-const PostComments = ({ comments, onAddComment }) => {
+const PostComments = ({ postId, onAddComment }) => {
   const [comment, setComment] = useState("");
-console.log(comments)
+  const comments = useSelector((state) =>
+    state.posts.items.find((post) => post._id === postId)?.comments || []
+  );
+//console.log(comments)
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (comment.trim()) {
-      onAddComment(comment);
+    if (comment) {
+      onAddComment(comment);   
       setComment("");
     }
   };
@@ -17,7 +21,7 @@ console.log(comments)
   return (
     <div className="w-full">
       <h4 className="font-bold mb-2">Comments:</h4>
-      {comments.map((comment, index) => (
+      {comments && comments.length > 0 && comments.map((comment, index) => (
         <div
           key={index}
           className="flex justify-between items-center mb-2 border-b p-1"
@@ -43,8 +47,8 @@ console.log(comments)
 };
 
 PostComments.propTypes = {
-  comments: PropTypes.array.isRequired,
-  onAddComment: PropTypes.func.isRequired,
+  postId: PropTypes.string.isRequired,
+  onAddComment: PropTypes.any.isRequired,
 };
 
 export default PostComments;

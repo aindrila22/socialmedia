@@ -1,30 +1,19 @@
 import { Loader2 } from "lucide-react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import { useEffect, useState } from "react";
-import { fetchAllPosts } from "@/utils/api";
+import { useEffect} from "react";
 import Post from "../components/post/Post";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPosts } from "@/redux/slice/postSlice";
 
 const Dashboard = ({user}) => {
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-  
-    useEffect(() => {
-      const getPosts = async () => {
-        try {
-          const fetchedPosts = await fetchAllPosts();
-          setPosts(fetchedPosts);
-        } catch (err) {
-          setError(err);
-          console.log(error);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      getPosts();
-    }, [error]);
+  const dispatch = useDispatch();
+  const { items: posts, loading } = useSelector((state) => state.posts);
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
+
 
     if (loading)
       return (

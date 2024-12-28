@@ -11,11 +11,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { createPost } from "@/utils/api";
+
+import { addPostAsync } from "@/redux/slice/postSlice";
+import { useDispatch } from "react-redux";
 
 const Navbar = ({ user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
+  const dispatch = useDispatch();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -28,9 +31,8 @@ const Navbar = ({ user }) => {
   const handleCreatePost = async (e) => {
     e.preventDefault();
     try {
-      await createPost(content);
+      await dispatch(addPostAsync(content));
       handleCloseModal();
-      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -40,7 +42,10 @@ const Navbar = ({ user }) => {
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/95 text-gray-600 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
         <div className="flex justify-between items-center h-14 border-b border-zinc-200">
-          <Link to="/" className="flex z-40 font-semibold uppercase text-xs md:text-base">
+          <Link
+            to="/"
+            className="flex z-40 font-semibold uppercase text-xs md:text-base"
+          >
             social<span className="text-blue-500">media</span>
           </Link>
           <div className="h-full flex items-center space-x-4">

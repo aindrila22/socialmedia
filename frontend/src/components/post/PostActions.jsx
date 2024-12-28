@@ -11,7 +11,7 @@ const PostActions = ({
 }) => (
   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 w-full">
     <Button onClick={onLike} variant="outline" className="w-full">
-      {post.likes.length > 1 ? "Likes ❤️" : "Like"} ({post.likes.length})
+      {post.likes.length > 0 ? "Likes ❤️" : "Like"} ({post.likes.length})
     </Button>
     <Button
       onClick={onToggleComments}

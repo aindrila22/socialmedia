@@ -1,64 +1,50 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 import PostHeader from "./PostHeader";
 import PostActions from "./PostActions";
 import PostComments from "./PostComments";
 import { DeleteModal, EditModal } from "./PostModals";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { likePost, deletePost, commentOnPost, updatePost } from "@/utils/api";
+//import { likePost, deletePost, commentOnPost, updatePost } from "@/utils/api";
+
+
+
+import { useDispatch } from "react-redux";
+import {
+  likePostAsync,
+  deletePostAsync,
+  addCommentAsync,
+  updatePostAsync,
+} from "../../redux/slice/postSlice";
 
 const Post = ({ post, currentUser }) => {
+  //console.log(currentUser);
+  const dispatch = useDispatch();
   const [showComments, setShowComments] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [content, setContent] = useState(post.content || "");
-  const [comment, setComment] = useState("");
 
-  const handleCloseDeleteModal = () => {
+
+  const handleLike = () => {
+    dispatch(likePostAsync(post._id));
+  };
+
+  const handleDelete = () => {
+    dispatch(deletePostAsync(post._id));
     setIsDeleteModalOpen(false);
   };
 
-  const handleLike = async () => {
-    try {
-      await likePost(post._id);
-      window.location.reload();
-    } catch (error) {
-      console.error("Error liking post:", error);
+  const handleAddComment = (comment) => {
+    if (comment) {
+      dispatch(addCommentAsync({ postId: post._id, comment }));
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      await deletePost(post._id);
-      handleCloseDeleteModal();
-      window.location.reload();
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
-  };
-
-  const handleAddComment = async (e) => {
+  const handleUpdatePost = (e) => {
     e.preventDefault();
-    if (!comment) return;
-
-    try {
-      await commentOnPost(post._id, comment);
-      setComment("");
-      window.location.reload();
-    } catch (error) {
-      console.error("Error adding comment:", error);
-    }
-  };
-
-  const handleUpdatePost = async (e) => {
-    e.preventDefault();
-    try {
-      await updatePost(content, post._id);
-      setIsEditModalOpen(false);
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(updatePostAsync({ postId: post._id, content }));
+    setIsEditModalOpen(false);
   };
 
   return (
@@ -77,7 +63,7 @@ const Post = ({ post, currentUser }) => {
           onDelete={() => setIsDeleteModalOpen(true)}
         />
         {showComments && (
-          <PostComments comments={post.comments} onAddComment={handleAddComment} />
+          <PostComments postId={post._id} onAddComment={handleAddComment} />
         )}
       </CardFooter>
       <DeleteModal
@@ -94,11 +80,6 @@ const Post = ({ post, currentUser }) => {
       />
     </Card>
   );
-};
-
-Post.propTypes = {
-  post: PropTypes.object.isRequired,
-  currentUser: PropTypes.object.isRequired,
 };
 
 export default Post;

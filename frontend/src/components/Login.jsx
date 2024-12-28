@@ -51,7 +51,7 @@ const Login = () => {
 
   return (
     <MaxWidthWrapper className="w-full mx-auto mt-10 max-w-2xl h-[80vh]">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
+      <h2 className="text-2xl font-bold mb-4">Social Media Login</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <Input

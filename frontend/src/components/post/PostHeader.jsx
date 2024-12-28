@@ -5,6 +5,7 @@ import { CardHeader } from "../ui/card";
 import { Link } from "react-router-dom";
 
 const PostHeader = ({ author, updatedAt }) => {
+  //console.log(author)
   const getInitials = (name) => {
     const names = name?.split(" ") || [];
     const firstInitial = names[0]?.[0] || "";

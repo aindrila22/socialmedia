@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { fetchMyLikes, fetchUserProfile } from "@/utils/api";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Post from "./post/Post";
@@ -20,46 +19,24 @@ import {
   DialogDescription,
 } from "../components/ui/dialog";
 import { Button } from "./ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLikesAsync, fetchProfileAsync } from "@/redux/slice/profileSlice";
 
 const Profile = ({ user: currentUser }) => {
   const { id } = useParams();
-  const [profileData, setProfileData] = useState(null);
-  const [profileLikes, setProfileLikes] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await fetchUserProfile(id);
-        setProfileData(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, [id]);
-
-  useEffect(() => {
-    const fetchLikes = async () => {
-      try {
-        const data = await fetchMyLikes(id);
-        setProfileLikes(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLikes();
-  }, [id]);
+    dispatch(fetchProfileAsync(id));
+    dispatch(fetchLikesAsync(id));
+  }, [dispatch, id]);
+  const profileData = useSelector((state) => state.profile.profileData);
+  const profileLikes = useSelector((state) => state.profile.profileLikes);
+  const profileLoading = useSelector((state) => state.profile.profileLoading);
+  const likesLoading = useSelector((state) => state.profile.likesLoading);
+  const error = useSelector((state) => state.profile.error);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -75,7 +52,7 @@ const Profile = ({ user: currentUser }) => {
     setIsDialogOpen(false);
   };
 
-  if (loading) {
+  if (profileLoading || likesLoading || !currentUser) {
     return (
       <MaxWidthWrapper>
         <div className="min-h-screen flex justify-center items-center w-full mx-auto">

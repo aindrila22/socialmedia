@@ -16,11 +16,14 @@ exports.getPosts = async (req, res) => {
 // Create a new post
 exports.createPost = async (req, res) => {
   const { content } = req.body;
-
   try {
     const post = new Post({ content, author: req.user.id });
     await post.save();
-    res.status(201).json(post);
+    const populatedPost = await Post.findById(post._id).populate(
+      "author",
+      "firstName lastName email"
+    );
+    res.status(201).json(populatedPost);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -31,13 +34,17 @@ exports.updatePost = async (req, res) => {
   try {
     const post = await Post.findOne({ _id: req.params.id, user: req.user._id });
     if (!post) {
-      return res.status(404).send();
+      return res.status(404).send({ message: "Post not found" });
     }
     Object.assign(post, req.body);
     await post.save();
-    res.send(post);
+    const updatedPost = await Post.findById(post._id).populate(
+      "author",
+      "firstName lastName email"
+    );
+    res.status(200).send(updatedPost);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send({ message: "Failed to update post", error });
   }
 };
 
@@ -71,19 +78,29 @@ exports.likePost = async (req, res) => {
 // Comment on a post
 exports.commentOnPost = async (req, res) => {
   const { content } = req.body;
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ message: "User not authenticated" });
+  }
 
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate(
+      "comments.user",
+      "email"
+    );
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
+
     post.comments.push({
       user: req.user.id,
       content,
     });
+
     await post.save();
-    res.status(201).json(post);
+
+    res.status(201).json({ message: "Comment added successfully", post });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 };
