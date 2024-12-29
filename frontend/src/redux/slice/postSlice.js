@@ -83,9 +83,8 @@ const postsSlice = createSlice({
         state.items = state.items.filter((post) => post._id !== action.payload);
       })
       .addCase(addCommentAsync.fulfilled, (state, action) => {
-        const updatedPost = action.payload.post;
-        console.log(updatedPost)
-        const postIndex = state.items.findIndex((post) => post._id === updatedPost._id);     
+        const updatedPost = action.payload.updatedPost;
+        const postIndex = state.items.findIndex((post) => post._id === updatedPost._id);   
         if (postIndex >= 0) {
           state.items[postIndex] = updatedPost;
         }

@@ -9,7 +9,7 @@ const PostComments = ({ postId, onAddComment }) => {
   const comments = useSelector((state) =>
     state.posts.items.find((post) => post._id === postId)?.comments || []
   );
-//console.log(comments)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (comment) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MaxWidthWrapper from "./MaxWidthWrapper";
@@ -19,24 +19,22 @@ import {
   DialogDescription,
 } from "../components/ui/dialog";
 import { Button } from "./ui/button";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchLikesAsync, fetchProfileAsync } from "@/redux/slice/profileSlice";
+import {useDispatch, useSelector } from "react-redux";
+import { fetchPosts } from "@/redux/slice/postSlice";
+
 
 const Profile = ({ user: currentUser }) => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  useEffect(() => {
-    dispatch(fetchProfileAsync(id));
-    dispatch(fetchLikesAsync(id));
-  }, [dispatch, id]);
-  const profileData = useSelector((state) => state.profile.profileData);
-  const profileLikes = useSelector((state) => state.profile.profileLikes);
-  const profileLoading = useSelector((state) => state.profile.profileLoading);
-  const likesLoading = useSelector((state) => state.profile.likesLoading);
-  const error = useSelector((state) => state.profile.error);
+  const { items: posts, loading, error } = useSelector((state) => state.posts);
+
+    useEffect(() => {
+      dispatch(fetchPosts());
+    }, [dispatch]);
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -52,7 +50,7 @@ const Profile = ({ user: currentUser }) => {
     setIsDialogOpen(false);
   };
 
-  if (profileLoading || likesLoading || !currentUser) {
+  if (loading || !currentUser) {
     return (
       <MaxWidthWrapper>
         <div className="min-h-screen flex justify-center items-center w-full mx-auto">
@@ -67,19 +65,24 @@ const Profile = ({ user: currentUser }) => {
   }
 
   const isCurrentUser = id === currentUser._id;
+  const filteredPosts = posts.filter((post) => post.author._id === id);
+  const filteredLikes = posts.filter((post) => post.likes.includes(id));
+  const author = filteredPosts.length > 0 ? filteredPosts[0].author : null;
 
   return (
     <div className="profile">
-      {profileData && (
+      {filteredPosts && (
         <>
           <Card className="max-w-4xl mx-auto mt-8">
             <CardHeader className="grid grid-cols-1 gap-6 md:gap-0 md:grid-cols-2 w-full">
               <div>
                 <CardTitle className="text-2xl font-bold">
-                  {profileData.user.firstName} {profileData.user.lastName}
+                  {author
+                    ? `${author.firstName} ${author.lastName}`
+                    : "No Author Found"}
                 </CardTitle>
                 <CardDescription className="text-gray-600">
-                  {profileData.user.email}
+                  {author?.email || "No email available"}
                 </CardDescription>
               </div>
               <div className="flex justify-end items-center">
@@ -142,13 +145,13 @@ const Profile = ({ user: currentUser }) => {
             <TabsList className="flex w-full">
               <TabsTrigger className="w-full uppercase" value="profile">
                 <span className="text-blue-500">
-                  {profileData.user.firstName}&apos;s
+                  {author?.firstName || "User"}&apos;s
                 </span>
-                &nbsp; POSTS ({profileData.posts.length})
+                &nbsp; POSTS ({filteredPosts.length})
               </TabsTrigger>
               {isCurrentUser && (
                 <TabsTrigger className=" w-full" value="likes">
-                  LIKED POSTS ({profileLikes.length})
+                  LIKED POSTS ({filteredLikes.length})
                 </TabsTrigger>
               )}
             </TabsList>
@@ -156,8 +159,8 @@ const Profile = ({ user: currentUser }) => {
             <TabsContent value="profile">
               <MaxWidthWrapper>
                 <div className="grid place-items-center w-full mx-auto mt-6">
-                  {profileData.posts.length > 0 ? (
-                    profileData.posts.map((post) => (
+                  {filteredPosts.length > 0 ? (
+                    filteredPosts.map((post) => (
                       <Post
                         key={post._id}
                         post={post}
@@ -177,8 +180,8 @@ const Profile = ({ user: currentUser }) => {
               <TabsContent value="likes">
                 <MaxWidthWrapper>
                   <div className="grid place-items-center w-full mx-auto mt-6">
-                    {profileLikes.length > 0 ? (
-                      profileLikes.map((post) => (
+                    {filteredLikes.length > 0 ? (
+                      filteredLikes.map((post) => (
                         <Post
                           key={post._id}
                           post={post}

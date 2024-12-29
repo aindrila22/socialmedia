@@ -97,8 +97,17 @@ exports.commentOnPost = async (req, res) => {
     });
 
     await post.save();
+    const updatedPost = await Post.findById(req.params.id)
+    .populate({
+      path: "comments.user",
+      select: "email"
+    })
+    .populate({
+      path: "author",
+      select: "firstName lastName email"
+    });
 
-    res.status(201).json({ message: "Comment added successfully", post });
+    res.status(201).json({ message: "Comment added successfully", updatedPost });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });

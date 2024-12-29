@@ -28,6 +28,7 @@ const Post = ({ post, currentUser }) => {
 
   const handleLike = () => {
     dispatch(likePostAsync(post._id));
+    window.location.reload();
   };
 
   const handleDelete = () => {
