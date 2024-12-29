@@ -16,6 +16,7 @@ import { addPostAsync } from "@/redux/slice/postSlice";
 import { useDispatch } from "react-redux";
 
 const Navbar = ({ user }) => {
+  //console.log("user", user)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const dispatch = useDispatch();

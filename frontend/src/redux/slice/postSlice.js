@@ -24,9 +24,9 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 
 export const likePostAsync = createAsyncThunk(
   "posts/likePost",
-  async (postId) => {
-    await likePost(postId);
-    return postId;
+  async ({ postId, userId }) => {
+    const updatedPost = await likePost({postId, userId});
+    return updatedPost;
   }
 );
 
@@ -76,8 +76,11 @@ const postsSlice = createSlice({
         state.loading = false;
       })
       .addCase(likePostAsync.fulfilled, (state, action) => {
-        const post = state.items.find((p) => p._id === action.payload);
-        if (post) post.likes += 1;
+        const updatedPost = action.payload;
+        const postIndex = state.items.findIndex((p) => p._id === updatedPost._id);
+        if (postIndex >= 0) {
+          state.items[postIndex] = updatedPost;
+        }
       })
       .addCase(deletePostAsync.fulfilled, (state, action) => {
         state.items = state.items.filter((post) => post._id !== action.payload);

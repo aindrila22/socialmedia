@@ -28,8 +28,9 @@ const Post = ({ post, currentUser }) => {
 
 
   const handleLike = () => {
-    dispatch(likePostAsync(post._id));
-    window.location.reload();
+    const postId = post._id;
+    const userId = currentUser._id;
+    dispatch(likePostAsync({ postId, userId }));
   };
 
   const handleDelete = () => {

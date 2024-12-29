@@ -143,8 +143,9 @@ export const updatePost = async (content, id) => {
   }
 };
 
-// Like a post
-export const likePost = async (postId) => {
+export const likePost = async ({ postId, userId }) => {
+  console.log(postId, userId); // This should log both values correctly
+
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -156,9 +157,14 @@ export const likePost = async (postId) => {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // Ensure content type is set to JSON
       },
+      body: JSON.stringify({ userId }), // Send userId in the body
     });
-    return response.json();
+
+    const data = await response.json();
+    console.log("Parsed Response Data:", data);
+    return data;
   } catch (error) {
     console.error(
       "Error fetching user details:",
@@ -243,6 +249,7 @@ export const fetchUserProfile = async (id) => {
     if (!response.ok) {
       throw new Error("Failed to fetch user profile");
     }
+    
     const data = await response.json(); 
     return data;
   } catch (error) {

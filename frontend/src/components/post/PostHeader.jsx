@@ -14,9 +14,9 @@ const PostHeader = ({ author, updatedAt }) => {
   };
 
   return (
-    <CardHeader className="grid grid-cols-12 bg-sky-50 w-full rounded-xl">
+    <CardHeader className="grid grid-cols-12 place-items-start bg-sky-50 w-full rounded-xl">
       <Link to={`/profile/${author?._id}`} className="col-span-1">
-        <Avatar className={`h-12 w-12  flex-shrink-0 col-span-1`}>
+        <Avatar className={`h-12 w-12  flex-shrink-0 col-span-1 mt-3`}>
           <AvatarFallback className={`bg-sky-900 text-white`}>
             {getInitials(`${author?.firstName} ${author?.lastName}`)}
           </AvatarFallback>
@@ -28,7 +28,8 @@ const PostHeader = ({ author, updatedAt }) => {
           className="text-gray-700 font-semibold text-base hover:underline "
         >
           {author?.firstName} {author?.lastName}
-        </Link>
+        </Link><br/>
+        <small className="text-sky-500">{author.email}</small>
         <div className="text-gray-400 text-xs ">
           posted on
           <span> {moment(updatedAt).format("MMMM Do YYYY, h:mm A")}</span>

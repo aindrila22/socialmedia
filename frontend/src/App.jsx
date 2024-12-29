@@ -17,6 +17,7 @@ function App() {
   const dispatch = useDispatch();
   const { details: user, loading } = useSelector((state) => state.user);
 
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {

@@ -21,13 +21,17 @@ import {
 import { Button } from "./ui/button";
 import {useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "@/redux/slice/postSlice";
+import { fetchUserProfile } from "../utils/api";
 
 
 const Profile = ({ user: currentUser }) => {
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [author, setAuthor] = useState(null);
+  const [loadingAuthor, setLoadingAuthor] = useState(true);
 
   const { items: posts, loading, error } = useSelector((state) => state.posts);
 
@@ -50,7 +54,32 @@ const Profile = ({ user: currentUser }) => {
     setIsDialogOpen(false);
   };
 
-  if (loading || !currentUser) {
+  useEffect(() => {
+    const fetchAuthorIfNeeded = async () => {
+      try {
+        const filteredPosts = posts.filter((post) => post.author._id === id);
+        const filteredLikes = posts.filter((post) => post.likes.includes(id));
+
+        if (filteredPosts.length > 0) {
+          setAuthor(filteredPosts[0].author);
+        } else if (filteredLikes.length > 0) {
+          setAuthor(filteredLikes[0].author);
+        } else {
+          const data = await fetchUserProfile(id); 
+        setAuthor(data.user);
+        }
+      } catch (err) {
+        console.log(err.response?.data?.message || "Failed to fetch author");
+      } finally {
+        setLoadingAuthor(false);
+      }
+    };
+
+    fetchAuthorIfNeeded();
+  }, [id, posts]);
+
+
+  if (loadingAuthor || loading || !currentUser) {
     return (
       <MaxWidthWrapper>
         <div className="min-h-screen flex justify-center items-center w-full mx-auto">
@@ -67,7 +96,7 @@ const Profile = ({ user: currentUser }) => {
   const isCurrentUser = id === currentUser._id;
   const filteredPosts = posts.filter((post) => post.author._id === id);
   const filteredLikes = posts.filter((post) => post.likes.includes(id));
-  const author = filteredPosts.length > 0 ? filteredPosts[0].author : null;
+
 
   return (
     <div className="profile">
