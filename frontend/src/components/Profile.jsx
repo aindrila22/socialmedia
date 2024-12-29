@@ -1,4 +1,4 @@
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MaxWidthWrapper from "./MaxWidthWrapper";
@@ -19,13 +19,11 @@ import {
   DialogDescription,
 } from "../components/ui/dialog";
 import { Button } from "./ui/button";
-import {useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "@/redux/slice/postSlice";
 import { fetchUserProfile } from "../utils/api";
 
-
 const Profile = ({ user: currentUser }) => {
-
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,10 +33,9 @@ const Profile = ({ user: currentUser }) => {
 
   const { items: posts, loading, error } = useSelector((state) => state.posts);
 
-    useEffect(() => {
-      dispatch(fetchPosts());
-    }, [dispatch]);
-  
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -57,17 +54,8 @@ const Profile = ({ user: currentUser }) => {
   useEffect(() => {
     const fetchAuthorIfNeeded = async () => {
       try {
-        const filteredPosts = posts.filter((post) => post.author._id === id);
-        const filteredLikes = posts.filter((post) => post.likes.includes(id));
-
-        if (filteredPosts.length > 0) {
-          setAuthor(filteredPosts[0].author);
-        } else if (filteredLikes.length > 0) {
-          setAuthor(filteredLikes[0].author);
-        } else {
-          const data = await fetchUserProfile(id); 
+        const data = await fetchUserProfile(id);
         setAuthor(data.user);
-        }
       } catch (err) {
         console.log(err.response?.data?.message || "Failed to fetch author");
       } finally {
@@ -76,9 +64,9 @@ const Profile = ({ user: currentUser }) => {
     };
 
     fetchAuthorIfNeeded();
-  }, [id, posts]);
+  }, [id]);
 
-
+  console.log(author);
   if (loadingAuthor || loading || !currentUser) {
     return (
       <MaxWidthWrapper>
@@ -96,7 +84,6 @@ const Profile = ({ user: currentUser }) => {
   const isCurrentUser = id === currentUser._id;
   const filteredPosts = posts.filter((post) => post.author._id === id);
   const filteredLikes = posts.filter((post) => post.likes.includes(id));
-
 
   return (
     <div className="profile">
