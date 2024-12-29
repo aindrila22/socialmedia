@@ -16,6 +16,7 @@ import {
   addCommentAsync,
   updatePostAsync,
 } from "../../redux/slice/postSlice";
+import PropTypes from "prop-types";
 
 const Post = ({ post, currentUser }) => {
   //console.log(currentUser);
@@ -81,6 +82,24 @@ const Post = ({ post, currentUser }) => {
       />
     </Card>
   );
+};
+Post.propTypes = {
+  post: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+    }).isRequired,
+    updatedAt: PropTypes.string.isRequired,
+    likes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
+  currentUser: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Post;
