@@ -1,63 +1,79 @@
+The Markdown file (README.md) is displaying plain text without formatting because it is not structured correctly with Markdown syntax. Markdown is a lightweight markup language that uses special characters to format text, and without proper syntax, it renders as plain text.
 
-Social Media POC Application
+Here’s how you can fix it:
+
+1. Add Proper Markdown Formatting
+
+Here’s a properly formatted version of your file:
+
+# Social Media POC Application
 
 This is a simplified social media Proof of Concept (POC) application where users can:
-	•	Register and log in securely.
-	•	Create, read, update, and delete posts.
-	•	Like and comment on posts.
-	•	View a list of created posts and liked posts in their profile section.
+- **Register and log in securely.**
+- **Create, read, update, and delete posts.**
+- **Like and comment on posts.**
+- **View a list of created posts and liked posts in their profile section.**
 
-The application is built with React for the frontend, Node.js + Express for the backend, and MongoDB for the database.
+The application is built with **React** for the frontend, **Node.js + Express** for the backend, and **MongoDB** for the database.
 
-Features
+---
 
-Frontend (React + Vite)
-	•	User Interface: A user-friendly interface styled with TailwindCSS and Shadcn/ui.
-	•	User Authentication: Register and log in functionality with secure token-based sessions.
-	•	Post Components: Display posts, like, comment, and delete posts with interactive UI components.
-	•	State Management: Managed application state using Redux Toolkit.
+## Features
 
-Backend (Node.js + Express)
-	•	API Setup: A RESTful API for user authentication and post management.
-	•	JWT Authentication: Secure session handling using JSON Web Tokens (JWT).
-	•	Middleware:
-	•	Authentication: Protects specific routes to ensure only authenticated users can perform certain actions.
+### Frontend (React + Vite)
+- **User Interface:** A user-friendly interface styled with TailwindCSS and Shadcn/ui.
+- **User Authentication:** Register and log in functionality with secure token-based sessions.
+- **Post Components:** Display posts, like, comment, and delete posts with interactive UI components.
+- **State Management:** Managed application state using Redux Toolkit.
 
-API Endpoints
+### Backend (Node.js + Express)
+- **API Setup:** A RESTful API for user authentication and post management.
+- **JWT Authentication:** Secure session handling using JSON Web Tokens (JWT).
+- **Middleware:**
+  - **Authentication:** Protects specific routes to ensure only authenticated users can perform certain actions.
 
-User Authentication
-	•	POST /api/auth/register: Registers a new user.
-	•	POST /api/auth/login: Logs in a user and returns a JWT token.
-	•	GET /api/auth/profile: Retrieves the profile of the currently authenticated user.
-	•	GET /api/auth/profile/:id: Retrieves the profile of a specific user by their ID.
-	•	GET /api/auth/profile/:id/likes: Retrieves the list of likes associated with a specific user.
+---
 
-Post CRUD Operations
-	•	GET /api/posts: Fetch all posts. (Public)
-	•	POST /api/posts: Create a new post. (Protected - Requires Authentication)
-	•	PUT /api/posts/:id: Update a post. (Protected - Requires Authentication)
-	•	DELETE /api/posts/:id: Delete a post. (Protected - Requires Authentication)
+## API Endpoints
 
-Like and Comment Operations
-	•	POST /api/posts/:id/like: Like/unlike a post. (Protected - Requires Authentication)
-	•	POST /api/posts/:id/comment: Add a comment to a post. (Protected - Requires Authentication)
+### User Authentication
+- `POST /api/auth/register`: Registers a new user.
+- `POST /api/auth/login`: Logs in a user and returns a JWT token.
+- `GET /api/auth/profile`: Retrieves the profile of the currently authenticated user.
+- `GET /api/auth/profile/:id`: Retrieves the profile of a specific user by their ID.
+- `GET /api/auth/profile/:id/likes`: Retrieves the list of likes associated with a specific user.
 
-Database (MongoDB)
+### Post CRUD Operations
+- `GET /api/posts`: Fetch all posts. *(Public)*
+- `POST /api/posts`: Create a new post. *(Protected - Requires Authentication)*
+- `PUT /api/posts/:id`: Update a post. *(Protected - Requires Authentication)*
+- `DELETE /api/posts/:id`: Delete a post. *(Protected - Requires Authentication)*
 
-Schema Design
-	•	User Schema: Includes fields like firstName, lastName, email, password, and timestamps.
-	•	Post Schema: Includes fields like content, author, likes, comments, and timestamps.
+### Like and Comment Operations
+- `POST /api/posts/:id/like`: Like/unlike a post. *(Protected - Requires Authentication)*
+- `POST /api/posts/:id/comment`: Add a comment to a post. *(Protected - Requires Authentication)*
 
-Features
-	•	Data Validation: Validates data at the schema level using Mongoose.
-	•	Relationships: Maintains relationships between users and posts.
+---
 
-Installation and Setup
+## Database (MongoDB)
 
-Prerequisites
-	•	Node.js (v20+)
-	•	MongoDB Atlas cluster link
-	•	Vite CLI for React
+### Schema Design
+- **User Schema:** Includes fields like `firstName`, `lastName`, `email`, `password`, and timestamps.
+- **Post Schema:** Includes fields like `content`, `author`, `likes`, `comments`, and timestamps.
+
+### Features
+- **Data Validation:** Validates data at the schema level using Mongoose.
+- **Relationships:** Maintains relationships between users and posts.
+
+---
+
+## Installation and Setup
+
+### Prerequisites
+- **Node.js (v20+)**
+- **MongoDB Atlas cluster link**
+- **Vite CLI for React**
+
 
 Steps to Run the Project
 	1.	Clone the Repository
@@ -107,9 +123,10 @@ npm run dev
 
 
 	5.	Access the Application
-Open the browser and go to: http://localhost:5173
+Open your browser and navigate to: http://localhost:5173
 
 Author
 
 Aindrila Bhattacharjee
 
+This updated version has consistent indentation and spacing, making it much easier to read and follow.
