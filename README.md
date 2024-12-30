@@ -1,10 +1,3 @@
-The Markdown file (README.md) is displaying plain text without formatting because it is not structured correctly with Markdown syntax. Markdown is a lightweight markup language that uses special characters to format text, and without proper syntax, it renders as plain text.
-
-Here’s how you can fix it:
-
-1. Add Proper Markdown Formatting
-
-Here’s a properly formatted version of your file:
 
 # Social Media POC Application
 
@@ -75,58 +68,62 @@ The application is built with **React** for the frontend, **Node.js + Express** 
 - **Vite CLI for React**
 
 
-Steps to Run the Project
-	1.	Clone the Repository
+Here’s the correctly formatted version of the README section that you can paste directly into your README file:
 
+# Steps to Run the Project
+
+## 1. Clone the Repository
+```bash
 git clone https://github.com/your-username/social-media-poc.git
 cd social-media-poc
 
+2. Install Dependencies
 
-	2.	Install Dependencies
-	•	Backend:
+Backend:
 
 cd backend
 npm install
 
-
-	•	Frontend:
+Frontend:
 
 cd frontend
 npm install
 
+3. Set Up Environment Variables
 
-	3.	Set Up Environment Variables
-	•	Backend: Create a .env file in the backend folder with the following:
+Backend:
+
+Create a .env file in the backend folder with the following:
 
 PORT=5000
 MONGO_URI=your-mongodb-atlas-uri
 JWT_SECRET=your-secret-key
 
+Frontend:
 
-	•	Frontend: Create a .env file in the frontend folder with the following:
+Create a .env file in the frontend folder with the following:
 
 VITE_BACKEND_URL=backend deployed link
 VITE_BACKEND_LOCALHOST=http://localhost:5000
 
+4. Start the Application
 
-	4.	Start the Application
-	•	Backend:
+Backend:
 
 cd backend
 npm run dev
 
-
-	•	Frontend:
+Frontend:
 
 cd frontend
 npm run dev
 
+5. Access the Application
 
-	5.	Access the Application
 Open your browser and navigate to: http://localhost:5173
 
-Author
+```
 
+Author
 Aindrila Bhattacharjee
 
-This updated version has consistent indentation and spacing, making it much easier to read and follow.
