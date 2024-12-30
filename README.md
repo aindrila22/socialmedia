@@ -1,3 +1,4 @@
+
 Social Media POC Application
 
 This is a simplified social media Proof of Concept (POC) application where users can:
@@ -11,18 +12,16 @@ The application is built with React for the frontend, Node.js + Express for the 
 Features
 
 Frontend (React + Vite)
-	•	User Interface: A user-friendly interface to enhance the user experience. Css styling done by TailwindCss and Shadcn/ui.
+	•	User Interface: A user-friendly interface styled with TailwindCSS and Shadcn/ui.
 	•	User Authentication: Register and log in functionality with secure token-based sessions.
 	•	Post Components: Display posts, like, comment, and delete posts with interactive UI components.
-	•	State Management: Managed application state using Redux toolkit.
-
+	•	State Management: Managed application state using Redux Toolkit.
 
 Backend (Node.js + Express)
-
-Features
-	•	API Setup: A RESTful API is implemented for user authentication and post management.
-	•	JWT Authentication: Secure session handling is enabled using JSON Web Tokens (JWT).
-	•	Middleware:	Authentication - Protects specific routes to ensure only authenticated users can perform certain actions.
+	•	API Setup: A RESTful API for user authentication and post management.
+	•	JWT Authentication: Secure session handling using JSON Web Tokens (JWT).
+	•	Middleware:
+	•	Authentication: Protects specific routes to ensure only authenticated users can perform certain actions.
 
 API Endpoints
 
@@ -32,7 +31,7 @@ User Authentication
 	•	GET /api/auth/profile: Retrieves the profile of the currently authenticated user.
 	•	GET /api/auth/profile/:id: Retrieves the profile of a specific user by their ID.
 	•	GET /api/auth/profile/:id/likes: Retrieves the list of likes associated with a specific user.
-  
+
 Post CRUD Operations
 	•	GET /api/posts: Fetch all posts. (Public)
 	•	POST /api/posts: Create a new post. (Protected - Requires Authentication)
@@ -44,9 +43,12 @@ Like and Comment Operations
 	•	POST /api/posts/:id/comment: Add a comment to a post. (Protected - Requires Authentication)
 
 Database (MongoDB)
-	•	Schema Design:
+
+Schema Design
 	•	User Schema: Includes fields like firstName, lastName, email, password, and timestamps.
 	•	Post Schema: Includes fields like content, author, likes, comments, and timestamps.
+
+Features
 	•	Data Validation: Validates data at the schema level using Mongoose.
 	•	Relationships: Maintains relationships between users and posts.
 
@@ -86,7 +88,8 @@ JWT_SECRET=your-secret-key
 
 
 	•	Frontend: Create a .env file in the frontend folder with the following:
-VITE_BACKEND_URL= backend deployed link
+
+VITE_BACKEND_URL=backend deployed link
 VITE_BACKEND_LOCALHOST=http://localhost:5000
 
 
@@ -104,10 +107,9 @@ npm run dev
 
 
 	5.	Access the Application
-	•	Open the browser and go to http://localhost:5173.
+Open the browser and go to: http://localhost:5173
 
+Author
 
-
-
-Author: Aindrila Bhattacharjee
+Aindrila Bhattacharjee
 
